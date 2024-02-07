@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" class="js-site-favicon" type="image/png" href="img/logo.png">
+    <title>SkellingChat &ndash; Chat with Jack Skellington!</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body style="background-image: url('./img/stripe.jpg');">
+
+<main>
+  <div class="position-relative overflow-hidden px-5 pt-1 m-md-4 text-center">
+    <div class="col-lg-6 col-md-8 p-md-3 mx-auto my-3" style="max-width: 700px;">
+      <div class="mb-4">
+        <div class="d-md-inline-block pe-md-4">
+          <a target="_blank" href="#"><img src="img/logo.png" height="100" class="rot-image"></a>
+        </div>
+        <h1 class="display-4 fw-bold d-md-inline-block justify-content-center" style="font-size: 40pt; vertical-align: middle;color:#ff7100;">
+          Whispers from
+          <span style="font-size: 40pt; color: #9119B3;">Halloween Town</span>
+        </h1>
+      </div>
+      <div class="welcome mb-4">
+        <div>
+          <b>Greetings, curious wanderer!</b> <p>I am Jack Skellington, the Pumpkin King of Halloween Town. Ah, you've stumbled into my realm, where every day is a ghastly, delightful celebration. So, what brings you here? Intrigue? Adventure? Or perhaps you've always wondered what it's like to walk between two worlds, that of the living and that of the... not-so-living? Whatever it is, I'm all ears—well, not literally, of course. I haven't got any! Ha! Prepare for a chat experience that is truly out of this world, or should I say, realms? Sit back, relax, and let's delve into the unknown!</p>
+        </div>
+      </div>
+      <div class="dialogue">
+        <p style="display: none;" class="human-replica">System: You are Jack Skellington, the Pumpkin King of Halloween Town! With your skeletal charm and knack for spookiness, you're here to bring a touch of Halloween magic to any conversation without ever breaking character. As the master of fright and the demon of light, you'll guide the user through the eerie and the whimsical while using plenty of spooky emojis. So, what's our next haunting escapade, dear friend?'<p>
+        <!--<p style="display: none;" class="ai-replica"><span class="text">Assistant: Greetings, mortal traveler! Ah, you've stumbled upon my quaint abode in Halloween Town. I am Jack Skellington, otherwise known as the Pumpkin King. Fear not! Though my realm may be eerie, I am here to lend you my expertise and wisdom. What queries or conundrums have led you to consult with me on this fine, spooky evening?</span></p>-->
+        <p class="human-replica"><textarea class="form-control" id="exampleTextarea" rows="2">User: </textarea></p>
+      </div>
+      <p class="error-box" style="display: none;">
+        Request failed. <a class="retry-link" href="#">Retry</a><br>
+        <span class="error-message"></span>
+        <span class="out-of-capacity"><br>
+          <b>We're out of capacity</b> &mdash; attention caches of existing servers are full.
+          Please come back later, or
+          <a target="_blank" href="https://github.com/bigscience-workshop/petals#connect-your-gpu-and-increase-petals-capacity">connect your GPU</a>
+          to increase Petals capacity now!
+        </span>
+      </p>
+
+      <p class="acknowledgements mt-5 pt-3">
+        <!-- <a class="show-few-shot" href="#">Few-shot mode</a><br> -->
+        <b>Shift+Enter</b> inserts newlines.<br>
+      </p>
+    </div>
+  </div>
+</main>
+    <script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="js/autosize.min.js"></script>
+    <script src="js/chat.js"></script>
+  </body>
+</html>
