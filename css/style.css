@@ -2,6 +2,39 @@
   max-width: 960px;
 }
 
+.spooky-body {
+  background:
+    radial-gradient(circle at 18% 12%, rgb(124 38 173 / 28%), transparent 38%),
+    radial-gradient(circle at 86% 2%, rgb(255 113 0 / 17%), transparent 32%),
+    linear-gradient(140deg, #09040d 0%, #140a18 55%, #07060f 100%);
+  color: #e9e5ef;
+  min-height: 100vh;
+}
+
+.spooky-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("../img/stripe.jpg");
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.spooky-shell {
+  z-index: 1;
+}
+
+.spooky-title {
+  font-size: 40pt;
+  vertical-align: middle;
+  color: #ff7a1a;
+  text-shadow: 0 0 12px rgb(255 122 26 / 30%), 0 0 32px rgb(145 25 179 / 22%);
+}
+
+.spooky-title span {
+  color: #c45cff;
+}
+
 /*
  * Custom translucent site header
  */
@@ -134,13 +167,14 @@ main p {
 }
 
 .human-replica, .ai-replica, .welcome, .error-box {
-  border: 1px solid #777;
+  border: 1px solid #70506f;
   border-radius: 10px;
   padding: 10px 15px;
   width: 90%;
   max-width: 360px;
   text-align: left;
   word-wrap: break-word;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 28%);
 }
 
 .human-replica, .ai-replica, .error-message {
@@ -148,7 +182,8 @@ main p {
 }
 
 .human-replica {
-  background-color: #f7f7ff;
+  background: linear-gradient(155deg, #1f172a, #14121f);
+  border-color: #8c70a6;
   margin-left: auto;
   margin-right: 0;
 }
@@ -159,7 +194,8 @@ main p {
 }
 
 .human-replica textarea {
-  background-color: #f7f7ff !important;
+  background-color: transparent !important;
+  color: #f6f0ff;
   border: none;
   resize: none;
   padding: 0;
@@ -172,7 +208,8 @@ main p {
 }
 
 .ai-replica {
-  background-color: #fff7f7;
+  background: linear-gradient(155deg, #271226, #1f0f16);
+  border-color: #9d627f;
 }
 
 .speed, .generation-controls, .suggest-join {
@@ -188,10 +225,15 @@ main p {
 }
 
 .welcome {
-  background-color: #fff7f7;
+  background: linear-gradient(155deg, #22172d, #1a1322);
+  border-color: #81589e;
   margin-left: auto;
   margin-right: 0;
   max-width: 400px;
+}
+
+.welcome b {
+  color: #ffb66f;
 }
 
 @media (max-width: 767px) {
@@ -236,7 +278,8 @@ main p {
 
 .error-box {
   font-size: 10pt;
-  background-color: #fcc;
+  background-color: #48202e;
+  border-color: #af5f7e;
   margin-left: auto;
   margin-right: 0;
   max-width: 100%;
