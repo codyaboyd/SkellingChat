@@ -37,9 +37,7 @@
         <span class="error-message"></span>
         <span class="out-of-capacity"><br>
           <b>We're out of capacity</b> &mdash; attention caches of existing servers are full.
-          Please come back later, or
-          <a target="_blank" href="https://github.com/bigscience-workshop/petals#connect-your-gpu-and-increase-petals-capacity">connect your GPU</a>
-          to increase Petals capacity now!
+          Try refreshing the page, or pick a smaller local model in js/chat.js if your device runs out of memory.
         </span>
       </p>
 
@@ -52,6 +50,6 @@
 </main>
     <script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
     <script src="js/autosize.min.js"></script>
-    <script src="js/chat.js"></script>
+    <script type="module" src="js/chat.js"></script>
   </body>
 </html>
