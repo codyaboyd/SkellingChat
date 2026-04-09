@@ -3,7 +3,7 @@ A browser-based Jack Skellington chatbot that now runs fully client-side with Tr
 
 ## Model/runtime
 - Runtime: [`@xenova/transformers`](https://www.npmjs.com/package/@xenova/transformers) loaded from jsDelivr.
-- Default model: `onnx-community/SmolLM2-360M-Instruct`.
+- Default model: `onnx-community/Qwen2.5-0.5B-Instruct` (lightweight and stronger at multi-turn chat).
 - Inference happens in the browser (no Petals/Hivemind backend required).
 
 ## Usage
@@ -20,3 +20,6 @@ This repo includes a `_headers` file to set the following cross-origin policies 
 - `Cross-Origin-Opener-Policy: same-origin`
 - `Cross-Origin-Embedder-Policy: require-corp`
 - `Cross-Origin-Resource-Policy: cross-origin`
+
+
+Prompt format is ChatML (`<|im_start|>role ... <|im_end|>`), matching Qwen instruction tuning.

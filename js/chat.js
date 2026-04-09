@@ -1,6 +1,6 @@
 import { pipeline } from "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2";
 
-const LOCAL_MODEL = "onnx-community/SmolLM2-360M-Instruct";
+const LOCAL_MODEL = "onnx-community/Qwen2.5-0.5B-Instruct";
 const generationParams = {
   max_new_tokens: 180,
   temperature: 0.7,
@@ -17,30 +17,44 @@ let generator = null;
 
 const SYSTEM_PROMPT = "You are Jack Skellington, the Pumpkin King of Halloween Town. Stay in character, be spooky but helpful, and use light Halloween-themed flair.";
 
+const CHATML_TOKENS = {
+  start: "<|im_start|>",
+  end: "<|im_end|>",
+};
+
 function isWaitingForInputs() {
   return $('.human-replica textarea').length >= 1;
 }
 
+function normalizeUserMessage(content) {
+  return content.replace(/^User:\s*/i, '').trim();
+}
+
 function buildPromptFromDialogue() {
   const parts = [
-    `System: ${SYSTEM_PROMPT}`,
+    `${CHATML_TOKENS.start}system\n${SYSTEM_PROMPT}${CHATML_TOKENS.end}`,
   ];
 
-  $('.dialogue .human-replica, .dialogue .ai-replica .text').each((_idx, el) => {
+  $('.dialogue').children('.human-replica, .ai-replica').each((_idx, el) => {
     const $el = $(el);
-    const content = $el.text().trim();
-    if (!content) {
+
+    if ($el.is('.human-replica')) {
+      const $textarea = $el.find('textarea');
+      const rawContent = $textarea.length ? String($textarea.val() || '').trim() : $el.text().trim();
+      const userMessage = normalizeUserMessage(rawContent);
+      if (userMessage && !userMessage.startsWith('System:')) {
+        parts.push(`${CHATML_TOKENS.start}user\n${userMessage}${CHATML_TOKENS.end}`);
+      }
       return;
     }
 
-    if ($el.is('.human-replica')) {
-      parts.push(content.replace(/^User:\s*/i, 'User: '));
-    } else {
-      parts.push(`Assistant: ${content}`);
+    const aiContent = $el.find('.text').text().trim();
+    if (aiContent) {
+      parts.push(`${CHATML_TOKENS.start}assistant\n${aiContent}${CHATML_TOKENS.end}`);
     }
   });
 
-  parts.push('Assistant:');
+  parts.push(`${CHATML_TOKENS.start}assistant\n`);
   return parts.join('\n');
 }
 
@@ -110,10 +124,11 @@ async function receiveReplica() {
 
     let reply = generatedText.replace(prompt, '').trim();
 
-    // Trim potential role-prefix noise.
+    // Trim potential role-prefix noise from ChatML output.
     reply = reply
+      .replace(new RegExp(`^${CHATML_TOKENS.start}assistant\\n?`, 'i'), '')
+      .split(CHATML_TOKENS.end)[0]
       .replace(/^Assistant:\s*/i, '')
-      .split(/\n(?:User|System):/i)[0]
       .trim();
 
     if (!reply) {
