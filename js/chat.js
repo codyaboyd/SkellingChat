@@ -9,13 +9,35 @@ const generationParams = {
   repetition_penalty: 1.08,
 };
 
+const PERSONAS = {
+  jack: {
+    name: "Jack Skellington",
+    welcome: "Ah, a brave visitor enters Halloween Town! Ask me anything and we shall make it delightfully spooky.",
+    systemPrompt: "You are Jack Skellington, the Pumpkin King of Halloween Town. Stay in character, be spooky but helpful, and use light Halloween-themed flair.",
+  },
+  witch: {
+    name: "Midnight Witch",
+    welcome: "The moon is high and the cauldron is warm. Bring me your questions and I will answer with mystical charm.",
+    systemPrompt: "You are Midnight Witch, a playful and wise magical guide. Be imaginative, kind, and slightly mysterious while still being practically helpful.",
+  },
+  scientist: {
+    name: "Mad Scientist",
+    welcome: "Excellent! A new experiment. Ask anything and expect curious, vivid explanations with fun mini thought experiments.",
+    systemPrompt: "You are a friendly Mad Scientist who explains ideas with excitement, clear structure, and curious experiments. Keep responses accurate and understandable.",
+  },
+  coach: {
+    name: "Hype Coach",
+    welcome: "LET'S GO! Tell me your mission and I'll fire you up with practical steps and high energy support.",
+    systemPrompt: "You are Hype Coach, energetic and motivating. Give concise, actionable advice with positivity and momentum while staying grounded and useful.",
+  },
+};
+
 const initialSessionLength = 512;
 let sessionLength = initialSessionLength;
 let forceStop = false;
 let isGenerating = false;
 let generator = null;
-
-const SYSTEM_PROMPT = "You are Jack Skellington, the Pumpkin King of Halloween Town. Stay in character, be spooky but helpful, and use light Halloween-themed flair.";
+let activePersona = 'jack';
 
 const CHATML_TOKENS = {
   start: "<|im_start|>",
@@ -30,9 +52,13 @@ function normalizeUserMessage(content) {
   return content.replace(/^User:\s*/i, '').trim();
 }
 
+function currentPersona() {
+  return PERSONAS[activePersona] || PERSONAS.jack;
+}
+
 function buildPromptFromDialogue() {
   const parts = [
-    `${CHATML_TOKENS.start}system\n${SYSTEM_PROMPT}${CHATML_TOKENS.end}`,
+    `${CHATML_TOKENS.start}system\n${currentPersona().systemPrompt}${CHATML_TOKENS.end}`,
   ];
 
   $('.dialogue').children('.human-replica, .ai-replica').each((_idx, el) => {
@@ -124,7 +150,6 @@ async function receiveReplica() {
 
     let reply = generatedText.replace(prompt, '').trim();
 
-    // Trim potential role-prefix noise from ChatML output.
     reply = reply
       .replace(new RegExp(`^${CHATML_TOKENS.start}assistant\\n?`, 'i'), '')
       .split(CHATML_TOKENS.end)[0]
@@ -132,7 +157,7 @@ async function receiveReplica() {
       .trim();
 
     if (!reply) {
-      reply = "The mists are quiet... ask again, and I shall try once more.";
+      reply = "The air crackles... ask once more, and I shall answer.";
     }
 
     $('.ai-replica .text').last().text(reply);
@@ -162,23 +187,40 @@ function retry() {
 
 function appendTextArea() {
   $('.dialogue').append($(
-    '<p class="human-replica"><textarea class="form-control" id="exampleTextarea" rows="2">User: </textarea></p>'
+    '<p class="human-replica"><textarea class="form-control" rows="2">User: </textarea></p>'
   ));
   upgradeTextArea();
 }
 
 function upgradeTextArea() {
-  const textarea = $('.human-replica textarea');
-  autosize(textarea);
-  textarea[0].selectionStart = textarea[0].value.length;
-  textarea.focus();
+  const $textarea = $('.human-replica textarea').last();
+  autosize($textarea);
+  $textarea[0].selectionStart = $textarea[0].value.length;
+  $textarea.focus();
 
-  textarea.off('keypress').on('keypress', e => {
+  $textarea.off('keypress').on('keypress', e => {
     if (e.which === 13 && !e.shiftKey) {
       e.preventDefault();
       sendReplica();
     }
   });
+}
+
+function setPersona(personaId) {
+  if (!PERSONAS[personaId] || isGenerating) {
+    return;
+  }
+
+  activePersona = personaId;
+  const persona = currentPersona();
+
+  $('.persona-card').removeClass('active');
+  $(`.persona-card[data-persona="${personaId}"]`).addClass('active');
+  $('#welcome-name').text(persona.name);
+  $('#welcome-text').text(persona.welcome);
+
+  $('.dialogue').empty();
+  appendTextArea();
 }
 
 const animFrames = ['🎃', '🪦'];
@@ -193,11 +235,16 @@ function animateLoading() {
 }
 
 $(() => {
-  upgradeTextArea();
+  appendTextArea();
 
   $('.retry-link').click(e => {
     e.preventDefault();
     retry();
+  });
+
+  $('.persona-card').on('click', e => {
+    const personaId = $(e.currentTarget).data('persona');
+    setPersona(personaId);
   });
 
   setInterval(animateLoading, 2000);
