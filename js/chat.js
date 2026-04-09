@@ -254,8 +254,45 @@ function animateLoading() {
   }
 }
 
+function register3dInteractions() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  const $shell = $('.spooky-shell');
+  const $cards = $('.persona-card');
+
+  $shell.on('mousemove', e => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    const rotateY = (px - 0.5) * 6;
+    const rotateX = (0.5 - py) * 4;
+    $shell.css('transform', `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`);
+  });
+
+  $shell.on('mouseleave', () => {
+    $shell.css('transform', '');
+  });
+
+  $cards.on('mousemove', e => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    const rotateY = (px - 0.5) * 18;
+    const rotateX = (0.5 - py) * 16;
+    card.style.transform = `translateY(-4px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  $cards.on('mouseleave blur', e => {
+    e.currentTarget.style.transform = '';
+  });
+}
+
 $(() => {
   appendTextArea();
+  register3dInteractions();
 
   $('.retry-link').click(e => {
     e.preventDefault();
