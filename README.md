@@ -1,5 +1,5 @@
 # SkellingChat
-A browser-based Jack Skellington chatbot that now runs fully client-side with Transformers.js and a local ONNX model.
+A browser-based multi-personality chatbot that now runs fully client-side with Transformers.js and a local ONNX model.
 
 ## Model/runtime
 - Runtime: [`@xenova/transformers`](https://www.npmjs.com/package/@xenova/transformers) loaded from jsDelivr.
