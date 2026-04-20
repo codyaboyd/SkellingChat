@@ -1,6 +1,6 @@
-# SkellingChat
+# open-character-chat
 
-SkellingChat is a **fully client-side character chat app**. You open it in a
+open-character-chat is a **fully client-side character chat app**. You open it in a
 browser, choose a persona, and chat with a local language model that runs
 directly on your machine using Transformers.js + ONNX.
 
@@ -24,7 +24,7 @@ No backend server, no API keys, and no cloud inference are required.
 
 ```bash
 git clone <your-repo-url>
-cd SkellingChat
+cd open-character-chat
 ```
 
 ### 2) Serve the files locally
@@ -85,7 +85,7 @@ You can swap this by changing `LOCAL_MODEL` in `js/chat.js`.
 ## Project structure
 
 ```text
-SkellingChat/
+open-character-chat/
 ├── index.html          # Main app shell and persona UI
 ├── js/
 │   ├── chat.js         # Persona logic, prompt building, local generation
