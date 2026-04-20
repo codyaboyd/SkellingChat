@@ -78,6 +78,8 @@ You can swap this by changing `LOCAL_MODEL` in `js/chat.js`.
 
 - Conversation is assembled with ChatML tokens (`<|im_start|>`, `<|im_end|>`).
 - Persona-specific system prompts are prepended.
+- Persona personality traits are expanded with tone/quirks/boundaries.
+- Lightweight persona fact retrieval (chunking + reranking) injects relevant character facts when user questions are character-specific.
 - Previous turns are included for context before each generation.
 
 ---
